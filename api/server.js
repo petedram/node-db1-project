@@ -12,9 +12,18 @@ module.exports = server;
 // shortcut for this:
 // db('users'); //resolves to array full of users - from promise
 
+
 server.get('/', (req, res) => {
     console.log('get /')
-    db('accounts')
+    console.log(req.query)
+    const orderby = req.query.orderby || 'id';
+	const limit = req.query.limit || -1;
+	const sortdir = req.query.sortdir || 'asc';
+
+
+        db('accounts')
+        .limit(limit)
+        .orderBy(orderby, sortdir)
         .then(account => {
             if (account) {
                 res.status(200).json({ data: account });
